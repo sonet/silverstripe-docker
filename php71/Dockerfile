@@ -13,6 +13,7 @@ RUN apt-get install -y libpq-dev \
 
 # Apache + PHP Config
 RUN echo "short_open_tag=Off" > /usr/local/etc/php/conf.d/short-open-tags.ini && \
+	echo "log_errors=On" > /usr/local/etc/php/conf.d/log_errors.ini && \
 	echo "date.timezone = America/Chicago" > /usr/local/etc/php/conf.d/timezone.ini
 
 #Opcache
