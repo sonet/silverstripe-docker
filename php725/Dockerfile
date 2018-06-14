@@ -73,5 +73,11 @@ RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf && \
 	usermod -u 1000 www-data && \
 	usermod -G staff www-data
 
+#Opcache
+RUN docker-php-ext-configure opcache --enable-opcache \
+    && docker-php-ext-install opcache
+# Copy configuration
+COPY config/opcache.ini $PHP_INI_DIR/conf.d/
+
 EXPOSE 80
 CMD ["apache2-foreground"]
