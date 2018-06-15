@@ -1,4 +1,4 @@
-FROM php:7.2.5-apache
+FROM php:7.2.6-apache
 MAINTAINER Adam Skrzypulec "<adam.s@northwestern.edu>"
 ENV DEBIAN_FRONTEND=noninteractive
 
