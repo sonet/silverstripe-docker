@@ -1,0 +1,37 @@
+alias dc='docker-compose'
+alias dcsh='docker-compose exec www /bin/bash'
+alias dcbd='docker-compose up --build'
+alias dps='docker ps -a'
+
+alias dps='docker ps -a'
+alias dc='docker-compose'
+alias dcsh='docker-compose exec www /bin/bash'
+alias dcbd='docker-compose up --build'
+
+dsh() {
+    docker exec -it "$1" bash
+}
+dst() {
+    docker start "$1"
+}
+dsp() {
+    docker stop "$1"
+}
+drm() {
+    docker rm "$1"
+}
+drmi() {
+    docker rmi "$1"
+}
+dlo() {
+	docker logs -f "$1"
+}
+di() {
+    if [ -z "$1" ];
+    then
+        docker images
+    else
+        docker inspect "$1"
+    fi
+}
+
