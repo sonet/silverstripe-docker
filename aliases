@@ -34,4 +34,6 @@ di() {
         docker inspect "$1"
     fi
 }
-
+dip() {
+    docker inspect "$1" | grep "IPAddress" | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}' | head -1
+}
