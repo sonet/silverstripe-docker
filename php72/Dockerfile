@@ -1,4 +1,4 @@
-FROM php:7.2.6-apache
+	FROM php:7.2.6-apache
 MAINTAINER Adam Skrzypulec "<adam.s@northwestern.edu>"
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -17,6 +17,11 @@ RUN apt-get update -y && apt-get install -y \
 		libicu-dev \
 		g++ \
 		openssh-client \
+		libfreetype6-dev \
+		libjpeg62-turbo-dev \
+		libpng-dev \
+		libxpm-dev \
+		libvpx-dev \
 	--no-install-recommends && \
 	rm -r /var/lib/apt/lists/*
 
@@ -32,7 +37,6 @@ RUN docker-php-ext-configure intl && \
 	docker-php-ext-install -j$(nproc) \
 		bcmath \
 		intl \
-		gd \
 		ldap \
 		mysqli \
 		pgsql \
@@ -41,7 +45,13 @@ RUN docker-php-ext-configure intl && \
 		pdo_pgsql \
 		soap \
 		tidy \
-		xsl
+		xsl \
+&& docker-php-ext-configure gd \
+    --with-freetype-dir=/usr/lib/x86_64-linux-gnu/ \
+    --with-jpeg-dir=/usr/lib/x86_64-linux-gnu/ \
+    --with-xpm-dir=/usr/lib/x86_64-linux-gnu/ \
+    --with-vpx-dir=/usr/lib/x86_64-linux-gnu/ \
+&& docker-php-ext-install gd
 
 # Apache + xdebug configuration
 RUN { \
