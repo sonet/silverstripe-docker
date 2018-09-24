@@ -57,10 +57,14 @@ RUN docker-php-ext-configure intl && \
     --with-vpx-dir=/usr/lib/x86_64-linux-gnu/ \
 && docker-php-ext-install gd
 
+# mcrypt
+RUN	pecl install mcrypt-1.0.1 && \
+	docker-php-ext-enable mcrypt
+
 # Apache + xdebug configuration
 RUN { \
                 echo "<VirtualHost *:80>"; \
-                echo "  DocumentRoot /var/www/html/html/public"; \
+                echo "  DocumentRoot /var/www/html/public"; \
                 echo "  LogLevel warn"; \
                 echo "  ErrorLog /var/log/apache2/error.log"; \
                 echo "  CustomLog /var/log/apache2/access.log combined"; \

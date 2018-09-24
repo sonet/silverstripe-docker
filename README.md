@@ -5,20 +5,32 @@
 - [*Docker*](https://docs.docker.com/)
 
 # How to use
- 
-Build the docker image first with:
+Build the docker image first:
 ```
 cd php72
 docker build -t sonet/silverstripe-web:7.2 .
 ```
+
+## Laravel
 Run the web server container mapping the project directory where the composer files and the
  public directory reside:
 ```
-docker run -d -p 80:80 -v $PWD:/var/www:cached --name myapp sonet/silverstripe-web:7.2
+docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:7.2 composer create-project silverstripe/installer .
 ```
-To install or update packages via composer:
+```
+docker run -d -p 80:80 -v $PWD:/var/www/html:cached --name ss4 sonet/silverstripe-web:7.2
+```
 ```
 docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:7.2 composer install
+```
+
+## Laravel
+Start a new Laravel project:
+```
+docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:7.2 composer create-project --prefer-dist laravel/laravel .
+```
+```
+docker run -d -p 80:80 -v $(PWD):/var/www/html:cached --name laravel sonet/silverstripe-web:7.2
 ```
 
 # License
