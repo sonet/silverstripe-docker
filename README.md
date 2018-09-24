@@ -11,7 +11,7 @@ cd php72
 docker build -t sonet/silverstripe-web:7.2 .
 ```
 
-## Laravel
+## Silverstripe
 Run the web server container mapping the project directory where the composer files and the
  public directory reside:
 ```
