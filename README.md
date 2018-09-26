@@ -33,24 +33,21 @@ docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:7.2 compo
 docker run -d -p 80:80 -v $(PWD):/var/www/html:cached --name laravel sonet/silverstripe-web:7.2
 ```
 
-
 ## Database
 
 ### MySQL
 
 MySQL Docker Containers: Understanding the basics https://severalnines.com/blog/mysql-docker-containers-understanding-basics  
-
+```
 docker run -d  -p 3333:3306 --name mysql --expose=3306 -e MYSQL_ROOT_PASSWORD=pass1234 -P mariadb:latest
-
+```
 ### PostgreSQL
 
-Spin up the database container
-
+Spin up the database container:
+```
 docker run --name psql -e POSTGRES_PASSWORD=pass1234 -d -p 5555:5432 postgres:latest
-
-If you have local instances occupying the default port change the port mappings to different port numbers. To connect to the database the container's IP Address.
-
-The `dip` bash alias along with all the other aliases might save some keystrokes unless a gui is being used like [Kinematic](https://kitematic.com/).
+```
+To connect to the database the container's IP Address. The `dip` bash alias along with all the other aliases might save some keystrokes unless a gui is being used like [Kinematic](https://kitematic.com/).
 
 # License
 
