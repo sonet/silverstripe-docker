@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install components
 RUN apt-get update -y && apt-get install -y \
+		iputils-ping \
 		curl \
 		git-core \
 		gzip \
