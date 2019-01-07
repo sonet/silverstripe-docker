@@ -92,11 +92,23 @@ RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf && \
 	usermod -u 1000 www-data && \
 	usermod -G staff www-data
 
-#Opcache
+# Opcache
 RUN docker-php-ext-configure opcache --enable-opcache \
     && docker-php-ext-install opcache
 # Copy configuration
 COPY config/opcache.ini $PHP_INI_DIR/conf.d/
+
+# Xdebug
+RUN pecl install xdebug && \
+		docker-php-ext-enable xdebug && \
+		sed -i '1 a xdebug.remote_autostart=true' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_mode=req' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_handler=dbgp' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_connect_back=1 ' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_port=9000' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_host=docker.for.mac.localhost' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_enable=1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+		sed -i '1 a xdebug.idekey=PHPSTORM' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 EXPOSE 80
 CMD ["apache2-foreground"]
