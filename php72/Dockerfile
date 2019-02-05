@@ -20,6 +20,7 @@ RUN apt-get update -y && apt-get install -y \
 		zlib1g-dev \
 		libicu-dev \
 		g++ \
+		vim \
 		openssh-client \
 		libfreetype6-dev \
 		libjpeg62-turbo-dev \
@@ -109,7 +110,7 @@ RUN pecl install xdebug && \
         sed -i '1 a xdebug.remote_port=9000' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
         sed -i '1 a xdebug.remote_host=docker.for.mac.localhost' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
         sed -i '1 a xdebug.remote_enable=1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-        sed -i '1 a xdebug.remote_log=/tmp/xdebug.log' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_log=/var/www/html/logs_apache/xdebug.log' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
 		sed -i '1 a xdebug.idekey=PHPSTORM' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
 		sed -i '1 a xdebug.extended_info = 1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
@@ -117,7 +118,5 @@ EXPOSE 80
 CMD ["apache2-foreground"]
 
 # Composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"  && \
-php -r "if (hash_file('sha384', 'composer-setup.php') === '93b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"  && \
-php composer-setup.php  && \
-php -r "unlink('composer-setup.php');"
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/bin/ --filename=composer
