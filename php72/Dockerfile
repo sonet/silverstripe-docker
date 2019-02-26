@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && apt-get install -y \
 		iputils-ping \
 		curl \
+		wget \
 		git-core \
 		gzip \
 		unzip \
@@ -19,6 +20,7 @@ RUN apt-get update -y && apt-get install -y \
 		zlib1g-dev \
 		libicu-dev \
 		g++ \
+		vim \
 		openssh-client \
 		libfreetype6-dev \
 		libjpeg62-turbo-dev \
@@ -92,20 +94,29 @@ RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf && \
 	usermod -u 1000 www-data && \
 	usermod -G staff www-data
 
-#Opcache
+# Opcache
 RUN docker-php-ext-configure opcache --enable-opcache \
     && docker-php-ext-install opcache
 # Copy configuration
 COPY config/opcache.ini $PHP_INI_DIR/conf.d/
 
+# Xdebug
+RUN pecl install xdebug && \
+		docker-php-ext-enable xdebug && \
+		sed -i '1 a xdebug.remote_autostart=1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_mode=req' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_handler=dbgp' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_connect_back=0' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_port=9000' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_host=docker.for.mac.localhost' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_enable=1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        sed -i '1 a xdebug.remote_log=/var/www/html/logs_apache/xdebug.log' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+		sed -i '1 a xdebug.idekey=PHPSTORM' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+		sed -i '1 a xdebug.extended_info = 1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 EXPOSE 80
 CMD ["apache2-foreground"]
 
 # Composer
-RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
-&& curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
-# Make sure we're installing what we think we're installing!
-&& php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
-&& php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --snapshot \
-&& rm -f /tmp/composer-setup.*
-
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/bin/ --filename=composer
