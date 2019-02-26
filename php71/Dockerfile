@@ -1,4 +1,4 @@
-	FROM php:7.3.2-apache
+FROM php:7.1-apache
 MAINTAINER Adam Skrzypulec "<adam.s@northwestern.edu>"
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -9,7 +9,7 @@ RUN apt-get update -y && apt-get install -y \
 		less \
 		git-core \
 		gzip \
-		unzip \
+		unzip \		
 		libcurl4-openssl-dev \
 		libgd-dev \
 		libzip-dev \
@@ -53,7 +53,6 @@ RUN docker-php-ext-configure intl && \
 		tidy \
 		xsl \
 		zip\
-		sodium\
 && docker-php-ext-configure gd \
     --with-freetype-dir=/usr/lib/x86_64-linux-gnu/ \
     --with-jpeg-dir=/usr/lib/x86_64-linux-gnu/ \
