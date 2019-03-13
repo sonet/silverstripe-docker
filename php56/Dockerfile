@@ -11,6 +11,12 @@ RUN apt-get install -y libpq-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
+#Opcache
+RUN docker-php-ext-configure opcache --enable-opcache \
+    && docker-php-ext-install opcache
+# Copy configuration
+COPY config/opcache.ini $PHP_INI_DIR/conf.d/
+
 # Composer
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
