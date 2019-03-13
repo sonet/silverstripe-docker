@@ -114,6 +114,13 @@ RUN pecl install xdebug && \
 		sed -i '1 a xdebug.idekey=PHPSTORM' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
 		sed -i '1 a xdebug.extended_info = 1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
+#PHP
+RUN sed -i 'memory_limit 512M' /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
+sed -i 'default_socket_timeout 600' /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
+sed -i 'mysql.connect_timeout 600' /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
+sed -i 'max_execution_time 0' /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
+sed -i 'set_time_limit 0' /usr/local/etc/php/conf.d/docker-php-ext-php.ini
+
 EXPOSE 80
 CMD ["apache2-foreground"]
 
