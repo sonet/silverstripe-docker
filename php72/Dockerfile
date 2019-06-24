@@ -89,7 +89,10 @@ RUN { \
 
 RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf && \
 	echo "date.timezone = America/Chicago" > /usr/local/etc/php/conf.d/timezone.ini && \
-	echo "short_open_tag=Off" > /usr/local/etc/php/conf.d/short-open-tags.ini && \
+	echo "short_open_tag = Off" > /usr/local/etc/php/conf.d/short-open-tags.ini && \
+	echo "log_errors = On" >> /usr/local/etc/php/conf.d/log-errors.ini && \
+	echo "error_log = /dev/stderr" >> /usr/local/etc/php/conf.d/log-errors.ini && \
+	echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/log-errors.ini && \
 	a2enmod rewrite expires remoteip cgid && \
 	usermod -u 1000 www-data && \
 	usermod -G staff www-data
@@ -103,23 +106,24 @@ COPY config/opcache.ini $PHP_INI_DIR/conf.d/
 # Xdebug
 RUN pecl install xdebug && \
 		docker-php-ext-enable xdebug && \
-		sed -i '1 a xdebug.remote_autostart=1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-        sed -i '1 a xdebug.remote_mode=req' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-        sed -i '1 a xdebug.remote_handler=dbgp' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-        sed -i '1 a xdebug.remote_connect_back=0' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-        sed -i '1 a xdebug.remote_port=9000' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-        sed -i '1 a xdebug.remote_host=docker.for.mac.localhost' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-        sed -i '1 a xdebug.remote_enable=1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-        sed -i '1 a xdebug.remote_log=/var/www/html/logs_apache/xdebug.log' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-		sed -i '1 a xdebug.idekey=PHPSTORM' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
-		sed -i '1 a xdebug.extended_info = 1' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+		echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        echo "xdebug.remote_mode=req" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        echo "xdebug.remote_connect_back=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        echo "xdebug.remote_host=docker.for.mac.localhost" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+        echo "xdebug.remote_log=/tmp/xdebug.log" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+		echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+		echo "xdebug.extended_info = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+		chown www-data:www-data /tmp/xdebug.log
 
 #PHP
-RUN sed -i 'memory_limit 512M' /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
-sed -i 'default_socket_timeout 600' /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
-sed -i 'mysql.connect_timeout 600' /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
-sed -i 'max_execution_time 0' /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
-sed -i 'set_time_limit 0' /usr/local/etc/php/conf.d/docker-php-ext-php.ini
+RUN echo "memory_limit 512M" >> /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
+echo "default_socket_timeout 600" >> /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
+echo "mysql.connect_timeout 600" >> /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
+echo "max_execution_time 0" >> /usr/local/etc/php/conf.d/docker-php-ext-php.ini && \
+echo "set_time_limit 0" >> /usr/local/etc/php/conf.d/docker-php-ext-php.ini
 
 EXPOSE 80
 CMD ["apache2-foreground"]

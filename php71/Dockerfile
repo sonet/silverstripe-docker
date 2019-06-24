@@ -87,7 +87,9 @@ RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf && \
 	echo "date.timezone = America/Chicago" > /usr/local/etc/php/conf.d/timezone.ini && \
 	echo "memory_limit = 256M" > /usr/local/etc/php/conf.d/memory-limit.ini && \
 	echo "max_execution_time = 300" > /usr/local/etc/php/conf.d/execution-limit.ini && \
-	echo "short_open_tag=Off" > /usr/local/etc/php/conf.d/short-open-tags.ini && \
+	echo "short_open_tag = Off" > /usr/local/etc/php/conf.d/short-open-tags.ini && \
+	echo "log_errors = On" > /usr/local/etc/php/conf.d/log-errors.ini && \
+	echo "error_log = /dev/stderr" > /usr/local/etc/php/conf.d/log-errors.ini && \
 	a2enmod rewrite expires remoteip cgid && \
 	usermod -u 1000 www-data && \
 	usermod -G staff www-data
