@@ -7,30 +7,30 @@
 # How to use
 Let's start with the build of the docker image:
 ```
-cd php74
-docker build -t sonet/silverstripe-web:7.4 .
+cd php8
+docker build -t sonet/silverstripe-web:8.0 .
 ```
 
 ## Silverstripe
 Run the web server container mapping the project directory where the composer files and the
  public directory reside:
 ```
-docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:7.4 composer create-project silverstripe/installer .
+docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:8.0 composer create-project silverstripe/installer .
 ```
 ```
-docker run -d -p 80:80 -v $PWD:/var/www/html:delegated --name ss4 sonet/silverstripe-web:7.4
+docker run -d -p 80:80 -v $PWD:/var/www/html:delegated --name ss4 sonet/silverstripe-web:8.0
 ```
 ```
-docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:7.4 composer install
+docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:8.0 composer install
 ```
 
 ## Laravel
 Start a new Laravel project:
 ```
-docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:7.4 composer create-project --prefer-dist laravel/laravel .
+docker run -it --rm --workdir=/app -v $PWD:/app sonet/silverstripe-web:8.0 composer create-project --prefer-dist laravel/laravel .
 ```
 ```
-docker run -d -p 80:80 -v $(PWD):/var/www/html:delegated --name laravel sonet/silverstripe-web:7.4
+docker run -d -p 80:80 -v $(PWD):/var/www/html:delegated --name laravel sonet/silverstripe-web:8.0
 ```
 
 ## Database
