@@ -62,6 +62,11 @@ RUN docker-php-ext-configure intl && \
     --with-xpm \
 && docker-php-ext-install gd
 
+# Redis
+RUN pecl install -o -f redis \
+&&  rm -rf /tmp/pear \
+&&  docker-php-ext-enable redis
+
 # Apache + xdebug configuration
 RUN { \
                 echo "<VirtualHost *:80>"; \
