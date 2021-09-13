@@ -67,6 +67,14 @@ RUN pecl install -o -f redis \
 &&  rm -rf /tmp/pear \
 &&  docker-php-ext-enable redis
 
+# Memcached
+#RUN apt-get install -y libmcached-dev zlib1g-dev &&\
+#    pecl install memcached-3.1.5 &&\
+#    docker-php-ext-enable memcached
+RUN apt-get install -y libz-dev libmemcached-dev && rm -r /var/lib/apt/lists/*
+RUN pecl install memcached
+RUN echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini
+
 # Apache + xdebug configuration
 RUN { \
                 echo "<VirtualHost *:80>"; \
