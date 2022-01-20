@@ -1,10 +1,40 @@
-@@ Please note that all items in this repo are intended for development purpose only! @@
+@@ Please note that all items in this repo are intended for local development purpose only! @@
 
 ## Requirements
 
 - [*Docker*](https://docs.docker.com/)
 
-# How to use
+# Silverstripe 4 Nginx Docker image
+
+A docker image for SilverStripe 4, serve with Nginx and php-fpm 8.0 on Ubuntu 20.04
+
+## How to build?
+
+```bash
+cd ngnx8
+docker build -t sonet/nginx-web:8.0 .
+```
+
+## How to run?
+
+```bash
+docker run \
+-ti \
+-p 80:80 \
+-v "$PWD/html":/var/www/project:delegated \
+--name ss4ng \
+sonet/nginx-web:8.0 &
+```
+
+## How to access the container?
+
+```bash
+docker exec -it ss4ng /bin/bash
+```
+
+# Apache based Docker images
+
+## How to use
 Let's start with the build of the docker image:
 ```
 cd php8
@@ -57,3 +87,4 @@ View [license information](http://php.net/license/) for the software contained i
 
  - Franco Springveldt - [https://github.com/fspringveldt](https://github.com/fspringveldt)
  - Brett Tasker - [https://github.com/brettt89](https://github.com/brettt89)
+ - Thor(Shenghan) Chen [https://github.com/zzdjk6](https://github.com/zzdjk6)
