@@ -21,7 +21,7 @@ docker build -t sonet/nginx-web:8.0 .
 docker run \
 -ti \
 -p 80:80 \
--v "$PWD/html":/var/www/project:delegated \
+-v "$PWD":/var/www/project:delegated \
 --name ss4ng \
 sonet/nginx-web:8.0 &
 ```

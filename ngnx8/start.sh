@@ -1,5 +1,5 @@
 #!/bin/bash
-#chown -R www-data /var/www/project
+chown -R www-data /var/www/project
 #chgrp -R www-data /var/www/project
 # [https://tengine.taobao.org/nginx_docs/en/docs/faq/daemon_master_process_off.html]
 # (Can I run nginx with “daemon off” or “master_process off” settings in a production environment?)
