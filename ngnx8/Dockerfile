@@ -39,6 +39,7 @@ COPY nginx-site /etc/nginx/sites-enabled/default
 COPY xdebug.ini /etc/php/8.0/fpm/conf.d/20-xdebug.ini
 COPY start.sh /root/start.sh
 RUN chmod a+x /root/start.sh
+RUN sed -i 's/user = www-data/user = 1000/g' /etc/php/8.0/fpm/pool.d/www.conf
 CMD /root/start.sh
 
 EXPOSE 80
